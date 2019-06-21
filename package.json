@@ -1,0 +1,42 @@
+{
+  "name": "gpdc-dynamodb",
+  "version": "1.0.0",
+  "description": "This package provides a General-Purpose Durable Key-Value Caching solution. DynamoDB table is used to persist cached data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NuITTake/gpdc-dynamodb.git"
+  },
+  "keywords": [
+    "Simple",
+    "General-Purpose",
+    "Durable",
+    "Cache",
+    "Key",
+    "Value",
+    "DynamoDB",
+    "General",
+    "Purpose",
+    "Easy",
+    "Use",
+    "Implement"
+  ],
+  "author": "NuITTake (NuITTake@GMail.Com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NuITTake/gpdc-dynamodb/issues"
+  },
+  "homepage": "https://github.com/NuITTake/gpdc-dynamodb#readme",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3"
+  },
+  "dependencies": {
+    "md5": "^2.2.1",
+    "simple-level-log": "^2.0.2"
+  }
+}
