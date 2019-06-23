@@ -1,30 +1,22 @@
+'use strict';
+
 const md5 = require('md5');
 const logger = require('simple-level-log/logger');
 
-// const AWS = require('aws-sdk');
-// AWS.config.update({ region: 'us-west-2' });
-// const documentClient = new AWS.DynamoDB.DocumentClient();
-
-/*
-  Useful URLs
-  https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_UpdateItem.html
-  https://docs.amazonaws.cn/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#query-property
-*/
 
 module.exports.CacheManager = class CacheManager {
   constructor(
     documentClient,
     dynamoDBTableName,
-    defaultTTLInSeconds = 60 * 15,
     downLoadCounter = true,
-    redundancyCounter = true) {
+    redundancyCounter = true,
+    defaultTTLInSeconds = 60 * 15) {
     this.documentClient = documentClient;
     this.defaultTTLInSeconds = defaultTTLInSeconds;
     this.tableName = dynamoDBTableName;
     this.downLoadCounter = downLoadCounter;
     this.redundancyCounter = redundancyCounter;
   }
-
 
   /**
    * 
@@ -135,7 +127,7 @@ module.exports.CacheManager = class CacheManager {
         Limit: 1
       };
 
-      const dbRecord = await documentClient.query(params).promise();
+      const dbRecord = await this.documentClient.query(params).promise();
       if (null != dbRecord && null != dbRecord.Items && 0 !== dbRecord.Items.length) {
         const dbItem = dbRecord.Items[0];
 
@@ -158,7 +150,7 @@ module.exports.CacheManager = class CacheManager {
           ReturnValues: 'UPDATED_NEW',
         };
 
-        const data = await documentClient.update(params).promise();
+        const data = await this.documentClient.update(params).promise();
         return { keyMD5, ExpiryTime: data.Attributes.ExpiryTime };
       }
     } catch (e) {
@@ -173,18 +165,18 @@ module.exports.CacheManager = class CacheManager {
         TableName: this.tableName,
         Item: {
           KeyMD5: keyMD5,
+          ValueMD5: valueMD5,
           cacheKey: key,
           cacheValue: valueToCache,
-          ValueMD5: valueMD5,
-          downloads: 0,
-          redundancy: 0,
-          timeCreated: timeNowInMilliseconds,
-          timeUpdated: timeNowInMilliseconds,
           ttlInSeconds,
           ExpiryTime: timeNowInSeconds + ttlInSeconds,
+          timeCreated: timeNowInMilliseconds,
+          timeUpdated: timeNowInMilliseconds,
+          downloads: 0,
+          redundancy: 0,
         },
       };
-      await documentClient.put(params).promise();
+      await this.documentClient.put(params).promise();
       return { keyMD5, ExpiryTime: params.Item.ExpiryTime };
     } catch (e) {
       logger.error(e);
@@ -193,15 +185,16 @@ module.exports.CacheManager = class CacheManager {
   }
 
 
+  /**
+   * 
+   * @param {*} key 
+   */
   async delete(key) {
-    if (null != recencyInSeconds && 0 >= recencyInSeconds) {
-      return null;
-    }
 
     const keyMD5 = md5(key);
 
     try {
-      params = {
+      const params = {
         TableName: this.tableName,
         Key: {
           KeyMD5: keyMD5,
