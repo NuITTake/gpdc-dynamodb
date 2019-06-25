@@ -1,6 +1,6 @@
 # gpdc-dynamodb
 
-This super lightweight and easy to use package provides a **G**eneral-**P**urpose **D**urable **C**ashing solution based on key-value storage. For persistent store it uses [DynamoDB](https://aws.amazon.com/dynamodb/) that way consumers can take full advantage of DynamoDB. 
+This super lightweight and easy to use package provides a **G**eneral-**P**urpose **D**urable **C**ashing solution based on a key-value storage. For persistent store it uses [DynamoDB](https://aws.amazon.com/dynamodb/) by taking full advantages associated it. 
 
 **Typical use cases:** 
 - RDBMS data reporting 
@@ -8,52 +8,64 @@ This super lightweight and easy to use package provides a **G**eneral-**P**urpos
 - Web-Client caching
 - Web-Server caching
 
-_This solution is not not recommended for applications with cache busting need under a few seconds._
+_This solution is not not recommended for applications with cache busting needs are under a few seconds._
 
-### Prerequisites
+## Prerequisites
 
-1. Create a DynamoDB table called GeneralPurposeDurableCache (or you can use any valid table name that you like) with **Primary key (Partition key): KeyMD5 of String type**. 
+1. Create a DynamoDB table called **GeneralPurposeDurableCache** (or you can use any valid table name that you like) with **Primary key (Partition key): KeyMD5 of String type**. 
 
-2. Add **ExpiryTime** as a TTL attribute
+2. Add **ExpiryTime** as a TTL attribute.
 
 3. Make sure to monitor and adjust table's read and write capacity as per your application's need.
 
-4. Make sure to grant necessary access permissions to your code (in which you are planning to use this package) to access your DynamoDB table. This package needs the following permission:
+4. Make sure to grant necessary access permissions to your code (through which you are planning to use this package) to access your DynamoDB table. This package needs the following permission:
   - delete item
   - query item
   - put items
 
-### Installing
+## Installing
 
 ```
 npm i gpdc-dynamodb
 ```
-### Table attributes:
+## Table attributes:
 
-1. **KeyMD5** [String] User created.
-2. ValueMD5 [String] Auto created.
-3. cacheKey [String] Auto created.
-4. cacheValue [String] Auto created.
-5. ttlInSeconds [Number] Auto created.
-6. **ExpiryTime** [Number] Auto created.  
-  - Use this as a TTL attribute.
-  - Value is in seconds.
-7. timeCreated [Number] Auto created.
-  - Value in in milliseconds
-8. timeUpdated [Number] Auto created.
-  - Value in in milliseconds
-9. downloads [Number] Auto created.
-  - This accounting counter indicates how many time a cached value has been served. 
-  - While creating an instance of **CacheManager**, if you set value **downLoadCounter** to **false** then this attribute will not be updated. 
-10. redundancy [Number] Auto created.
-  - This accounting counter indicates how many time an exact same value was attempted to put into cache.
-  - While creating an instance of **CacheManager**, if you set value **redundancyCounter** to **false** then this attribute along with **timeUpdated** and **ExpiryTime** will not be updated.
+###### **KeyMD5** 
+  [String]
+  User created.
+###### ValueMD5
+  [String]
+  Auto created.
+###### cacheKey 
+  [String]
+  Auto created.
+###### cacheValue
+  [String]
+  Auto created.
+###### ttlInSeconds
+  [Number]
+  Auto created.
+###### **ExpiryTime**
+  [Number]
+  Auto created. Value is in seconds. Use this as attrbute a TTL attribute.
+###### timeCreated
+  [Number]
+  Auto created. Value is in milliseconds.
+###### timeUpdated
+  [Number]
+  Auto created. Value is in milliseconds.
+###### downloads
+  [Number] 
+  Auto created. This accounting counter indicates how many times a cached value has been served. While creating an instance of **CacheManager**, if you set value **downLoadCounter** to **false** then this attribute will not be updated during **get** operation.
+###### redundancy
+  [Number]
+  Auto created. This accounting counter indicates how many times an exact same value was attempted to put into cache for the exact same key. While creating an instance of **CacheManager**, if you set value **redundancyCounter** to **false** then this attribute along with **timeUpdated** and **ExpiryTime** will not be updated during **put** operation.
 
-*Switching accouting counters off will save one write operation in each of **get** and **put** call. However it not recommended as the entire operation of data access takes extreamly small amount off time (in most of the situation it should not take more than couple of milliseconds).*
+*Switching off accouting counters will save one write operation in each of **get** and **put** call. However it not recommended as the entire operation of data access takes extreamly small amount off time (in most of the situation it should not take more than couple of milliseconds).*
 
 
 
-### Example: How to use GPDC with and without accounting counters
+## Example: How to use GPDC with and without accounting counters
 
 ```
 'use strict';
