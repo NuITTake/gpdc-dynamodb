@@ -1,6 +1,6 @@
 # gpdc-dynamodb
 
-This super lightweight and easy to use package provides a **G**eneral-**P**urpose **D**urable **C**ashing solution based on a key-value storage. For persistent store it uses [DynamoDB](https://aws.amazon.com/dynamodb/) by taking full advantages associated it. 
+This super lightweight and easy to use package provides a **G**eneral-**P**urpose **D**urable **C**aching solution based on a key-value storage. For persistent store, it uses [DynamoDB](https://aws.amazon.com/dynamodb/) by taking the full advantages associated with it. 
 
 **Typical use cases:** 
 - RDBMS data reporting 
@@ -8,7 +8,7 @@ This super lightweight and easy to use package provides a **G**eneral-**P**urpos
 - Web-Client caching
 - Web-Server caching
 
-_This solution is not not recommended for applications with cache busting needs are under a few seconds._
+_This solution is not not recommended for applications with cache busting needs under a few seconds._
 
 ## Prerequisites
 
@@ -18,12 +18,12 @@ _This solution is not not recommended for applications with cache busting needs 
 
 3. Make sure to monitor and adjust table's read and write capacity as per your application's need.
 
-4. Make sure to grant necessary access permissions to your code (through which you are planning to use this package) to access your DynamoDB table. This package needs the following permission:
+4. Make sure to grant necessary access permissions to your code (through which you are planning to use this package) to access your DynamoDB table. This package needs the following permissions:
   - delete item
   - query item
   - put items
 
-## Installing
+## Installation
 
 ```
 npm i gpdc-dynamodb
@@ -56,12 +56,12 @@ npm i gpdc-dynamodb
   Auto created. Value is in milliseconds.
 ###### downloads
   [Number] 
-  Auto created. This accounting counter indicates how many times a cached value has been served. While creating an instance of **CacheManager**, if you set value **downLoadCounter** to **false** then this attribute will not be updated during **get** operation.
+  Auto created. This accounting counter indicates how many times a cached value has been served. While creating an instance of **CacheManager**, if you set the value of **downLoadCounter** to **false** then this attribute will not be updated during **get** operation.
 ###### redundancy
   [Number]
   Auto created. This accounting counter indicates how many times an exact same value was attempted to put into cache for the exact same key. While creating an instance of **CacheManager**, if you set value **redundancyCounter** to **false** then this attribute along with **timeUpdated** and **ExpiryTime** will not be updated during **put** operation.
 
-*Switching off accouting counters will save one write operation in each of **get** and **put** call. However it not recommended as the entire operation of data access takes extreamly small amount off time (in most of the situation it should not take more than couple of milliseconds).*
+*Switching off accounting counters will save one write operation in each of **get** and **put** call. However it not recommended as the entire operation of data access takes extremely small amount of time (in most situations it should not take more than a couple of milliseconds).*
 
 
 
