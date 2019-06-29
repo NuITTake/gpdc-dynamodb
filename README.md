@@ -4,7 +4,7 @@ This super lightweight and easy to use package provides a **G**eneral-**P**urpos
 
 **Typical use cases:** 
 - RDBMS data reporting 
-- Middlelayer data caching 
+- Middle Layer data caching 
 - Web-Client caching
 - Web-Server caching
 
@@ -58,11 +58,6 @@ npm i gpdc-dynamodb
 ```
 'use strict';
 
-/*
-  Useful URLs
-  https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_UpdateItem.html
-  https://docs.amazonaws.cn/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#query-property
-*/
 const AWS = require('aws-sdk');
 const { CacheManager } = require('gpdc-dynamodb');
 const logger = require('simple-level-log/logger');
@@ -71,7 +66,6 @@ AWS.config.update({ region: 'us-west-1' });
 const documentClient = new AWS.DynamoDB.DocumentClient();
 const dynamoDBTableName = 'GeneralPurposeDurableCache';
 
-//--- https://stackoverflow.com/questions/14226803/wait-5-seconds-before-executing-next-line
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 async function test(downLoadCounter = true, redundancyCounter = true) {
@@ -144,7 +138,7 @@ async function main() {
   console.log('===============================================================================');
   await test(true, true);
   console.log('-------------------------------------------------------------------------------');
-  await test(false, false);
+  await test(false, false); // Please take a note of the fact that ExpiryTime during second update did not change.
   console.log('===============================================================================');
 }
 
@@ -169,7 +163,7 @@ Output:
 [I]: [my-number-list]: [102,9123,1233,1992,162,1923,232312,10031212]. Valid till Sun, 23 Jun 2019 07:39:18 GMT.
 [I]: [my-number-list]: [102,9123,1233,1992,162,1923,232312,10031212]. Valid till Sun, 23 Jun 2019 07:39:18 GMT.
 [W]: 10 seconds recent cache for [my-number-list] does not exists.
-[I]: Cached [my-number-list] till Sun, 23 Jun 2019 07:39:18 GMT.
+[I]: Cached [my-number-list] till Sun, 23 Jun 2019 07:39:18 GMT. 
 [D]: END: main(downLoadCounter = false, redundancyCounter = false)
 ===============================================================================
 ```
@@ -191,7 +185,7 @@ Please email to NuITTake@GMail.Com if you wish to extend a helping hand.
 
 ## This project is licensed under the [ISC License (ISC)](https://opensource.org/licenses/ISC)
 
-Copyright 2019 Nu It Take (NuITTake@GMail.Com)
+Copyright 2019 Nu IT Take (NuITTake@GMail.Com)
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 
