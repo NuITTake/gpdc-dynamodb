@@ -3,10 +3,11 @@
 This super lightweight and easy to use package provides a **G**eneral-**P**urpose **D**urable **C**aching solution based on a key-value storage. For persistent store, it uses [DynamoDB](https://aws.amazon.com/dynamodb/) by taking the full advantages associated with it. 
 
 **Typical use cases:** 
+- [Implementing a Hybrid Database System](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-hybrid.html)
 - RDBMS data reporting 
 - Middle Layer data caching 
-- Web-Client caching
-- Web-Server caching
+- Client side caching
+- Server side caching
 
 _This solution is not not recommended for applications with cache busting needs under a few seconds._
 
@@ -30,42 +31,38 @@ npm i gpdc-dynamodb
 ```
 ## Table attributes:
 
-###### **KeyMD5** 
-  [String]
-  User created.
-###### ValueMD5
-  [String]
-  Auto created.
-###### cacheKey 
+#### **KeyMD5** 
+  [String] 
+  User created. **Primary key (Partition key)**.
+#### ValueMD5
   [String]
   Auto created.
-###### cacheValue
+#### cacheKey 
   [String]
   Auto created.
-###### ttlInSeconds
+#### cacheValue
+  [String]
+  Auto created.
+#### ttlInSeconds
   [Number]
   Auto created.
-###### **ExpiryTime**
+#### **ExpiryTime**
   [Number]
-  Auto created. Value is in seconds. Use this as attrbute a TTL attribute.
-###### timeCreated
-  [Number]
-  Auto created. Value is in milliseconds.
-###### timeUpdated
+  Auto created. Value is in seconds. Use this as a **TTL attribute**.
+#### timeCreated
   [Number]
   Auto created. Value is in milliseconds.
-###### downloads
+#### timeUpdated
+  [Number]
+  Auto created. Value is in milliseconds.
+#### downloads
   [Number] 
-  Auto created. This accounting counter indicates how many times a cached value has been served. While creating an instance of **CacheManager**, if you set the value of **downLoadCounter** to **false** then this attribute will not be updated during **get** operation.
-###### redundancy
+  Auto created. This accounting counter indicates how many times a cached value has been served. While creating an instance of **CacheManager**, if you set the value of **downLoadCounter** to **false** then this attribute will not be updated.
+#### redundancy
   [Number]
-  Auto created. This accounting counter indicates how many times an exact same value was attempted to put into cache for the exact same key. While creating an instance of **CacheManager**, if you set value **redundancyCounter** to **false** then this attribute along with **timeUpdated** and **ExpiryTime** will not be updated during **put** operation.
+  Auto created. This accounting counter indicates how many times an exact same value was attempted to put into cache for the exact same key. _When **redundancy** is increamented **CacheManager** it also extends life of the cached item by updating **timeUpdated** and **ExpiryTime** that costs single [WCU](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProvisionedThroughput.html#ProvisionedThroughput.CapacityUnits.Read) and eliminates need of trasfering cache value over the network and then writing into DynamoDB table, which not only saves you money byt also substantially reduces overall operation latency._
 
-*Switching off accounting counters will save one write operation in each of **get** and **put** call. However it not recommended as the entire operation of data access takes extremely small amount of time (in most situations it should not take more than a couple of milliseconds).*
-
-
-
-## Example: How to use GPDC with and without accounting counters
+## Example: How to use GPDC with and without accounting counters:
 
 ```
 'use strict';
