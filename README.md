@@ -60,7 +60,8 @@ npm i gpdc-dynamodb
   Auto created. This accounting counter indicates how many times a cached value has been served. While creating an instance of **CacheManager**, if you set the value of **downLoadCounter** to **false** then this attribute will not be updated.
 #### redundancy
   [Number]
-  Auto created. This accounting counter indicates how many times an exact same value was attempted to put into cache for the exact same key. _When **redundancy** is increamented **CacheManager** it also extends life of the cached item by updating **timeUpdated** and **ExpiryTime** that costs single [WCU](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProvisionedThroughput.html#ProvisionedThroughput.CapacityUnits.Read) and eliminates need of trasfering cache value over the network and then writing into DynamoDB table, which not only saves you money byt also substantially reduces overall operation latency._
+  Auto created. This accounting counter indicates how many times an exact same value was attempted to put into cache for the exact same key. 
+  _When **redundancy** is increamented **CacheManager** also extends life of the cached item by updating **timeUpdated** and **ExpiryTime** that costs a single [WCU](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProvisionedThroughput.html#ProvisionedThroughput.CapacityUnits.Read) and eliminates need of trasfering cache value over the network and then writing it into DynamoDB table. This not only saves you money but also substantially reduces overall transaction latency._
 
 ## Example: How to use GPDC with and without accounting counters:
 
