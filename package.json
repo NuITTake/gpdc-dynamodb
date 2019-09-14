@@ -1,6 +1,6 @@
 {
   "name": "gpdc-dynamodb",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "This package provides a General-Purpose Durable Key-Value Caching solution. DynamoDB table is used to persist cached data.",
   "main": "index.js",
   "scripts": {
