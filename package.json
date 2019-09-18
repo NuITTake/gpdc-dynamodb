@@ -1,6 +1,6 @@
 {
   "name": "gpdc-dynamodb",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "This package provides a General-Purpose Durable Key-Value Caching solution. DynamoDB table is used to persist cached data.",
   "main": "index.js",
   "scripts": {
@@ -34,6 +34,6 @@
   "dependencies": {
     "aws-sdk": "^2.487.0",
     "md5": "^2.2.1",
-    "simple-level-log": "^2.0.3"
+    "simple-level-log": "^2.0.6"
   }
 }
